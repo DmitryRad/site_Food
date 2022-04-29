@@ -11,14 +11,6 @@ a {
     text-decoration: none
 }
 
-.show {
-    display: block
-}
-
-.hide {
-    display: none
-}
-
 .btn {
     width: 220px;
     height: 65px;
@@ -723,8 +715,13 @@ a {
     margin: 0 auto
 }
 
+.show {
+    display: block
+}
 
-
+.hide {
+    display: none
+}
 .fade {
     animation-name: fade;
     animation-duration: 1.5s;
