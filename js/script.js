@@ -215,7 +215,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Forms 
 
-    const forms = document.querySelector('form');
+    const forms = document.querySelectorAll('form');
 
     const message = {
         loading: 'Загрузка',
@@ -231,25 +231,37 @@ window.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const statusMesage = document.createElement('div');
-            statusMesage.classList.add('status');
-            statusMesage.textContent = message.loading;
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
             form.append(statusMessage);
 
             const request = new XMLHttpRequest();
             request.open('POST', 'server.php');
 
-            request.setRequestHeader('Content-type', 'muptipart/from-data');
+         //  request.setRequestHeader('Content-type', 'muptipart/form-data');
+            request.setRequestHeader('Content-type', 'application/json');
             const formData = new FormData(form);
 
-            request.send(formData);
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
 
             request.addEventListener('load', () => {
-                if (request.s === 200) {
+                if (request.status === 200) {
                     console.log(request.response);
-                    statusMesage.textContent = message.success;
+                    statusMessage.textContent = message.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
                 } else {
-                    statusMesage.textContent = message.failure;
+                    statusMessage.textContent = message.failure;
                 }
             });
         });
