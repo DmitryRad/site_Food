@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // Timer
-    const deadline = '2022-05-20';
+    const deadline = '2022-05-31';
 
     function getTimeRemaining(endtime) { // задача функции - получить разницу между датами
         const t = Date.parse(endtime) - Date.parse(new Date()),// получим количество милисекунд до количества времени до которого нам нужно будет дойти. в переменную t получим разницу во времени в количестве мс
@@ -188,7 +188,7 @@ window.addEventListener('DOMContentLoaded', () => {
         "Меню 'Фитнес'",
         "Меню 'Фитнес' - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!",
         10,
-        ".menu .container",
+        ".menu .container"
  //       'menu__item'
     ).render();
 
@@ -291,4 +291,8 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }, 4000);
     }
+
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json())
+        .then(res => console.log(res));
 });
