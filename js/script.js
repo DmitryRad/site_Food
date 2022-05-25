@@ -41,7 +41,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const deadline = '2022-05-31';
 
     function getTimeRemaining(endtime) { // задача функции - получить разницу между датами
-        const t = Date.parse(endtime) - Date.parse(new Date()),// получим количество милисекунд до количества времени до которого нам нужно будет дойти. в переменную t получим разницу во времени в количестве мс
+        const t = Date.parse(endtime) - Date.parse(new Date()),
+            // получим количество милисекунд до количества времени до которого нам нужно будет дойти. в переменную t получим разницу во времени в количестве мс
               days = Math.floor(t / (1000 * 60 * 60 * 24)), // получили количество дней
               hours = Math.floor((t / (1000 * 60 * 60)) % 24),  // общее количество часов
               minutes = Math.floor((t / (1000 * 60)) % 60), // общее количество минут
@@ -224,10 +225,23 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     forms.forEach(item => {
-        postData(item);
+        bindPostData(item);
     });
 
-    function postData(form) {
+    // функция для вызова подключения к серверу
+    const postData = async (url, data) => {
+        const res = await fetch(url,{
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+
+        return await res.json();
+    };
+
+    function bindPostData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -242,19 +256,9 @@ window.addEventListener('DOMContentLoaded', () => {
  
             const formData = new FormData(form);
 
-           const object = {};
-            formData.forEach(function(value, key){
-                object[key] = value;
-            });
+           const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            fetch('server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'    
-                },
-                body: JSON.stringify(object)
-            })
-            .then(data => data.text())
+            postData('http://localhost:3000/requests', json)
             .then(data => {
                 console.log(data);
                 showThanksModal(message.success);
