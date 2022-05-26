@@ -253,10 +253,10 @@ window.addEventListener('DOMContentLoaded', () => {
             `;
 
             form.insertAdjacentElement('afterend', statusMessage);
- 
+
             const formData = new FormData(form);
 
-           const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             postData('http://localhost:3000/requests', json)
             .then(data => {
